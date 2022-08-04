@@ -8,6 +8,7 @@ OpenCV>=4.5.0 <br>
 
 > python path/to/export.py --weights yolov5s.pt --img [640,640] --opset 12 --include onnx
 > python path/to/export.py --weights yolov7.pt --img [640,640]
+请注意，yolov7导出的时候不要加--grid这个参数(控制detect层),否则opencv读取没问题，推理报错.<br>
 
 可以通过yolo.h中定义的YOLOV5宏定义来切换yolov5和yolov7两个版本，(其实两个版本onnx后处理方式差不多的说<br>
 >通过yolo.h中定义的YOLO_P6来切换是否使用两者的P6模型。<br>
