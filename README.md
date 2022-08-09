@@ -1,13 +1,13 @@
 # yolov7-opencv-dnn-cpp
 使用opencv模块部署yolov7-0.1版本和yolov5-6.0以上版本<br>
 
-基于yolov5-6.0版本的yolov5:https://github.com/ultralytics/yolov5 <br>
-基于yolov7-0.1的版本https://github.com/WongKinYiu/yolov7 <br>
++ 基于yolov5-6.0版本的yolov5:https://github.com/ultralytics/yolov5 <br>
++ 基于yolov7-0.1的版本https://github.com/WongKinYiu/yolov7 <br>
 
 OpenCV>=4.5.0 <br>
 
-> python path/to/export.py --weights yolov5s.pt --img [640,640] --opset 12 --include onnx
-> python path/to/export.py --weights yolov7.pt --img [640,640]
+> python path/to/export.py --weights yolov5s.pt --img [640,640] --opset 12 --include onnx<br>
+> python path/to/export.py --weights yolov7.pt --img [640,640] <br>
 请注意，yolov7导出的时候不要加--grid这个参数(控制detect层),否则opencv读取没问题，推理报错.<br>
 
 可以通过yolo.h中定义的YOLOV5宏定义来切换yolov5和yolov7两个版本，(其实两个版本onnx后处理方式差不多的说<br>
