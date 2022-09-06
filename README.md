@@ -15,6 +15,9 @@ OpenCV>=4.5.0 <br>
 > YOLOV5:true -->yolov5.onnx<br>
 > YOLOV5:false-->yolov7.onnx
 
+2022-09-06 updata:<br>
+最近有些小伙伴使用opencv4.6的版本报错了，经过debug发现，opencv4.6的和4.5.x的forward输出顺序不一样导致的，使用opencv4.6的时候在net.forward之后需要加上一个排序，使得输出口从大到小排序才行。<br>
+https://github.com/UNeedCryDear/yolov7-opencv-dnn-cpp/blob/79ac7a93d4ec00bc06295a481b1dcc22893f97e2/yolo.cpp#L48
 
 另外关于换行符，windows下面需要设置为CRLF，上传到github会自动切换成LF，windows下面切换一下即可。<br>
 贴个yolov7.onnx和yolov5s.onnx的对比<br>
