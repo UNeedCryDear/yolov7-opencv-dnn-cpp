@@ -21,12 +21,12 @@ https://github.com/UNeedCryDear/yolov7-opencv-dnn-cpp/blob/86d4f5ef6ecfd7eb36a14
 2022-10-18 update:<br>
 
 yolov7目前有些模型低于opencv4.5.5会报错,报错信息类似下面使用opencv4.5.0读取yolov7-d6.pt转出的onnx模型（不能加参数--grid），此时建议升级下opencv的版本
-> >OpenCV(4.5.0) Error: Unspecified error (> Node [Slice]:(341) parse error: OpenCV(4.5.0) D:\opencv\ocv4.5.0\sources\modules\dnn\src\onnx\onnx_importer.cpp:697: error: (-2:Unspecified error) in function 'void __cdecl cv::dnn::dnn4_v20200908::ONNXImporter::handleNode(const class opencv_onnx::NodeProto &)'
-> > Slice layer only supports steps = 1 (expected: 'countNonZero(step_blob != 1) == 0'), where
-> >     'countNonZero(step_blob != 1)' is 1
-> > must be equal to
-> >     '0' is 0
-> > in cv::dnn::dnn4_v20200908::ONNXImporter::handleNode, file D:\opencv\ocv4.5.0\sources\modules\dnn\src\onnx\onnx_importer.cpp, line 1797
+> >OpenCV(4.5.0) Error: Unspecified error (> Node [Slice]:(341) parse error: OpenCV(4.5.0) D:\opencv\ocv4.5.0\sources\modules\dnn\src\onnx\onnx_importer.cpp:697: error: (-2:Unspecified error) in function 'void __cdecl cv::dnn::dnn4_v20200908::ONNXImporter::handleNode(const class opencv_onnx::NodeProto &)'</br>
+> > Slice layer only supports steps = 1 (expected: 'countNonZero(step_blob != 1) == 0'), where</br>
+> >     'countNonZero(step_blob != 1)' is 1</br>
+> > must be equal to</br>
+> >     '0' is 0</br>
+> > in cv::dnn::dnn4_v20200908::ONNXImporter::handleNode, file D:\opencv\ocv4.5.0\sources\modules\dnn\src\onnx\onnx_importer.cpp, line 1797</br>
 
 debug可以发现是由于yolov7-d6中使用了ReOrg模块引起的报错，这个模块有点类似早期的yolov5的Facos模块，如果一定要在opencv4.5.0下面运行，需要将ReOrg模块修改成下面的代码。
 在models/common.py里面搜索下ReOrg.
