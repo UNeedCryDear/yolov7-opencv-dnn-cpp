@@ -45,7 +45,7 @@ bool Yolo::Detect(Mat& SrcImg, Net& net, vector<Output>& output) {
 	std::vector<cv::Mat> netOutputImg;
 	net.forward(netOutputImg, net.getUnconnectedOutLayersNames());
 #if CV_VERSION_MAJOR==4&&CV_VERSION_MINOR==6
-	std::sort(netOutputImg.begin(), netOutputImg.end(), [](Mat &A, Mat &B) {return A.size > B.size; });//opencv 4.6
+	std::sort(netOutputImg.begin(), netOutputImg.end(), [](Mat &A, Mat &B) {return A.size[2] > B.size[2]; });//opencv 4.6
 #endif
 	std::vector<int> classIds;//结果id数组
 	std::vector<float> confidences;//结果每个id对应置信度数组
