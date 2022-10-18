@@ -15,9 +15,35 @@ OpenCV>=4.5.0 <br>
 > YOLOV5:true -->yolov5.onnx<br>
 > YOLOV5:false-->yolov7.onnx
 
-2022-09-06 updata:<br>
+2022-09-06 update:<br>
 最近有些小伙伴使用opencv4.6的版本报错了，经过debug发现，opencv4.6的和4.5.x的forward输出顺序不一样导致的，使用opencv4.6的时候在net.forward之后需要加上一个排序，使得输出口从大到小排序才行。<br>
 https://github.com/UNeedCryDear/yolov7-opencv-dnn-cpp/blob/79ac7a93d4ec00bc06295a481b1dcc22893f97e2/yolo.cpp#L48
+2022-10-18 update:<br>
+
+yolov7目前有些模型低于opencv4.5.5会报错,报错信息类似下面使用opencv4.5.0读取yolov7-d6.pt转出的onnx模型（不能加参数--grid），此时建议升级下opencv的版本
+> >OpenCV(4.5.0) Error: Unspecified error (> Node [Slice]:(341) parse error: OpenCV(4.5.0) D:\opencv\ocv4.5.0\sources\modules\dnn\src\onnx\onnx_importer.cpp:697: error: (-2:Unspecified error) in function 'void __cdecl cv::dnn::dnn4_v20200908::ONNXImporter::handleNode(const class opencv_onnx::NodeProto &)'
+> > Slice layer only supports steps = 1 (expected: 'countNonZero(step_blob != 1) == 0'), where
+> >     'countNonZero(step_blob != 1)' is 1
+> > must be equal to
+> >     '0' is 0
+> ) in cv::dnn::dnn4_v20200908::ONNXImporter::handleNode, file D:\opencv\ocv4.5.0\sources\modules\dnn\src\onnx\onnx_importer.cpp, line 1797
+debug可以发现是由于yolov7-d6中使用了ReOrg模块引起的报错，这个模块有点类似早期的yolov5的Facos模块，如果一定要在opencv4.5.0下面运行，需要将ReOrg模块修改成下面的代码。
+在models/common.py里面搜索下ReOrg.
+```
+class ReOrg(nn.Module):
+    def __init__(self):
+        super(ReOrg, self).__init__()
+    def forward(self, x):  # x(b,c,w,h) -> y(b,4c,w/2,h/2)
+        #origin code
+        # return torch.cat([x[..., ::2, ::2], x[..., 1::2, ::2], x[..., ::2, 1::2], x[..., 1::2, 1::2]], 1)
+        N, C, H, W = x.size()
+        s = 2
+        x = x.view(N, C, H // s, s, W // s, s).permute(0, 3, 5, 1, 2, 4).contiguous()  # x(1,64,40,2,40,2)
+        y = x.view(N, C * s * s, H // s, W // s).contiguous()  # x(1,256,40,40)
+        return y
+```
+
+
 
 另外关于换行符，windows下面需要设置为CRLF，上传到github会自动切换成LF，windows下面切换一下即可。<br>
 贴个yolov7.onnx和yolov5s.onnx的对比<br>
