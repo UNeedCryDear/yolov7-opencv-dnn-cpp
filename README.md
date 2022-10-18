@@ -34,14 +34,12 @@ debug可以发现是由于yolov7-d6中使用了ReOrg模块引起的报错，这�
 class ReOrg(nn.Module):
     def __init__(self):
         super(ReOrg, self).__init__()
+
     def forward(self, x):  # x(b,c,w,h) -> y(b,4c,w/2,h/2)
         #origin code
         # return torch.cat([x[..., ::2, ::2], x[..., 1::2, ::2], x[..., ::2, 1::2], x[..., 1::2, 1::2]], 1)
-        N, C, H, W = x.size()
-        s = 2
-        x = x.view(N, C, H // s, s, W // s, s).permute(0, 3, 5, 1, 2, 4).contiguous()  # x(1,64,40,2,40,2)
-        y = x.view(N, C * s * s, H // s, W // s).contiguous()  # x(1,256,40,40)
-        return y
+        self.concat=Contract(gain=2)
+        return self.concat(x)
 ```
 
 
