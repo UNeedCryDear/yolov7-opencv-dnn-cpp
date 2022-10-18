@@ -17,7 +17,7 @@ OpenCV>=4.5.0 <br>
 
 2022-09-06 update:<br>
 最近有些小伙伴使用opencv4.6的版本报错了，经过debug发现，opencv4.6的和4.5.x的forward输出顺序不一样导致的，使用opencv4.6的时候在net.forward之后需要加上一个排序，使得输出口从大到小排序才行。<br>
-https://github.com/UNeedCryDear/yolov7-opencv-dnn-cpp/blob/79ac7a93d4ec00bc06295a481b1dcc22893f97e2/yolo.cpp#L48
+https://github.com/UNeedCryDear/yolov7-opencv-dnn-cpp/blob/86d4f5ef6ecfd7eb36a14d0c06a84a5468ff98e6/yolo.cpp#L48
 2022-10-18 update:<br>
 
 yolov7目前有些模型低于opencv4.5.5会报错,报错信息类似下面使用opencv4.5.0读取yolov7-d6.pt转出的onnx模型（不能加参数--grid），此时建议升级下opencv的版本
