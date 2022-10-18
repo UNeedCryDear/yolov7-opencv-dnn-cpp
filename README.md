@@ -26,7 +26,8 @@ yolov7目前有些模型低于opencv4.5.5会报错,报错信息类似下面使�
 > >     'countNonZero(step_blob != 1)' is 1
 > > must be equal to
 > >     '0' is 0
-> ) in cv::dnn::dnn4_v20200908::ONNXImporter::handleNode, file D:\opencv\ocv4.5.0\sources\modules\dnn\src\onnx\onnx_importer.cpp, line 1797
+> > in cv::dnn::dnn4_v20200908::ONNXImporter::handleNode, file D:\opencv\ocv4.5.0\sources\modules\dnn\src\onnx\onnx_importer.cpp, line 1797
+
 debug可以发现是由于yolov7-d6中使用了ReOrg模块引起的报错，这个模块有点类似早期的yolov5的Facos模块，如果一定要在opencv4.5.0下面运行，需要将ReOrg模块修改成下面的代码。
 在models/common.py里面搜索下ReOrg.
 ```
